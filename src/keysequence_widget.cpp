@@ -86,7 +86,7 @@ struct KeySequence_Widget_Private
         if ( sequence.isEmpty() )
             button->setText(KeySequence_Widget::tr("(empty)"));
         else
-            button->setText(sequence.toString());
+            button->setText(sequence.toString(QKeySequence::NativeText));
     }
 
     void update_sequence()

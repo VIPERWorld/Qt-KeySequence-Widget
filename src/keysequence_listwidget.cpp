@@ -37,7 +37,7 @@ KeySequence_ListWidget::KeySequence_ListWidget(QWidget *parent) :
 {
     horizontalHeader()->hide();
     verticalHeader()->hide();
-    setShowGrid(false);
+    //setShowGrid(false);
     setSelectionMode(NoSelection);
 
     insertColumn(0);
@@ -91,4 +91,5 @@ void KeySequence_ListWidget::append_window(QMainWindow *window)
 {
     foreach(QMenu* menu, window->findChildren<QMenu*>())
         append_menu(menu);
+    resizeColumnsToContents();
 }
