@@ -22,11 +22,13 @@
 */
 #include "keysequence_widget_plugin_collection.hpp"
 #include "keysequence_widget_plugin.hpp"
+#include "keysequence_listwidget_plugin.hpp"
 
 KeySequence_Widget_Plugin_Collection::KeySequence_Widget_Plugin_Collection(QObject *parent) :
     QObject(parent)
 {
     widgets.push_back(new KeySequence_Widget_Plugin(this));
+    widgets.push_back(new KeySequence_ListWidget_Plugin(this));
 }
 
 QList<QDesignerCustomWidgetInterface *> KeySequence_Widget_Plugin_Collection::customWidgets() const

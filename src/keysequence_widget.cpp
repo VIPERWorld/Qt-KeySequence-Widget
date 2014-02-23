@@ -57,12 +57,13 @@ struct KeySequence_Widget_Private
         QVBoxLayout *layout = new QVBoxLayout(p);
         layout->setContentsMargins(0, 0, 0, 0);
         layout->addWidget(button);
+        button->setSizePolicy(p->sizePolicy());
 
 
         button->setFocusProxy(p);
         button->installEventFilter(p);
 
-        p->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+        //p->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
         p->setFocusPolicy(Qt::StrongFocus);
         p->setAttribute(Qt::WA_MacShowFocusRect, true);
         p->setAttribute(Qt::WA_InputMethodEnabled, false);

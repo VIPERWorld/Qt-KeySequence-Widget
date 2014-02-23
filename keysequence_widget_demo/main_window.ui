@@ -15,11 +15,12 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0">
-     <widget class="QKeySequenceEdit" name="keySequenceEdit"/>
-    </item>
-    <item row="1" column="0">
-     <widget class="KeySequence_Widget" name="keysequence_widget"/>
+    <item row="1" column="1">
+     <widget class="QPushButton" name="pushButton_2">
+      <property name="text">
+       <string>Clear</string>
+      </property>
+     </widget>
     </item>
     <item row="0" column="1">
      <widget class="QPushButton" name="pushButton">
@@ -28,11 +29,17 @@
       </property>
      </widget>
     </item>
-    <item row="1" column="1">
-     <widget class="QPushButton" name="pushButton_2">
-      <property name="text">
-       <string>Clear</string>
-      </property>
+    <item row="1" column="0">
+     <widget class="KeySequence_Widget" name="keysequence_widget"/>
+    </item>
+    <item row="0" column="0">
+     <widget class="QKeySequenceEdit" name="keySequenceEdit"/>
+    </item>
+    <item row="2" column="0" colspan="2">
+     <widget class="KeySequence_ListWidget" name="keysequence_listwidget">
+      <column/>
+      <column/>
+      <column/>
      </widget>
     </item>
    </layout>
@@ -65,7 +72,7 @@
   </action>
   <action name="action_Action2">
    <property name="text">
-    <string>&amp;Action2</string>
+    <string>A&amp;ction2</string>
    </property>
    <property name="shortcut">
     <string>Alt+2</string>
@@ -75,8 +82,13 @@
  <customwidgets>
   <customwidget>
    <class>KeySequence_Widget</class>
-   <extends>QPushButton</extends>
+   <extends>QWidget</extends>
    <header>keysequence_widget.hpp</header>
+  </customwidget>
+  <customwidget>
+   <class>KeySequence_ListWidget</class>
+   <extends>QTableWidget</extends>
+   <header>keysequence_listwidget.hpp</header>
   </customwidget>
  </customwidgets>
  <resources/>

@@ -17,9 +17,11 @@
 INCLUDEPATH += $$PWD/src
 
 SOURCES += \
-    $$PWD/src/keysequence_widget.cpp
+    $$PWD/src/keysequence_widget.cpp \
+    $$PWD/src/keysequence_listwidget.cpp
 
 HEADERS += \
-    $$PWD/src/keysequence_widget.hpp
+    $$PWD/src/keysequence_widget.hpp \
+    $$PWD/src/keysequence_listwidget.hpp
 
 

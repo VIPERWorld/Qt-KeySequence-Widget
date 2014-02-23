@@ -24,11 +24,13 @@ TEMPLATE = lib
 
 SOURCES += \
     keysequence_widget_plugin.cpp \
-    keysequence_widget_plugin_collection.cpp
+    keysequence_widget_plugin_collection.cpp \
+    keysequence_listwidget_plugin.cpp
 
 HEADERS += \
     keysequence_widget_plugin.hpp \
-    keysequence_widget_plugin_collection.hpp
+    keysequence_widget_plugin_collection.hpp \
+    keysequence_listwidget_plugin.hpp
 
 include(../keysequence_widget.pri)
 

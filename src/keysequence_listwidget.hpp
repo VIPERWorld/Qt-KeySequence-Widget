@@ -23,25 +23,24 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-#include "main_window.hpp"
+#ifndef KEYSEQUENCE_LISTWIDGET_HPP
+#define KEYSEQUENCE_LISTWIDGET_HPP
 
-Main_Window::Main_Window(QWidget *parent) :
-    QMainWindow(parent)
-{
-    setupUi(this);
-    keysequence_widget->setAttachedAction(action_Action2);
-    action_Action2->setShortcut(QKeySequence::Open);
-    keysequence_listwidget->append_window(this);
-}
+#include <QTableWidget>
 
-void Main_Window::changeEvent(QEvent *e)
+class KeySequence_ListWidget : public QTableWidget
 {
-    QMainWindow::changeEvent(e);
-    switch (e->type()) {
-        case QEvent::LanguageChange:
-            retranslateUi(this);
-            break;
-        default:
-            break;
-    }
-}
+    Q_OBJECT
+public:
+    explicit KeySequence_ListWidget(QWidget *parent = 0);
+
+    void append_row(QAction* action);
+    void append_title_row(QString title);
+
+    void append_rows(QList<QAction*> actions);
+    void append_menu(QMenu* menu);
+    void append_window(class QMainWindow* window);
+
+};
+
+#endif // KEYSEQUENCE_LISTWIDGET_HPP
