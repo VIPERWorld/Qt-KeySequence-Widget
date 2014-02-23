@@ -40,6 +40,7 @@ struct KeySequence_Widget_Private
     KeySequence_Widget *p;
     QKeySequence sequence;
     QKeySequence previous_sequence;
+    QKeySequence default_sequence;
     bool is_grabbing;
     QPushButton *button;
     QAction* action;
@@ -47,7 +48,7 @@ struct KeySequence_Widget_Private
     KeySequence_Widget_Private(KeySequence_Widget* p,
                                const QKeySequence &seq,
                                QAction* action=nullptr)
-        : p(p), sequence(seq), previous_sequence(seq),
+        : p(p), sequence(seq), previous_sequence(seq), default_sequence(seq),
           is_grabbing(false), button (new QPushButton(p)), action(nullptr)
     {
         if ( action )
@@ -146,6 +147,11 @@ QKeySequence KeySequence_Widget::keySequence() const
     return d->sequence;
 }
 
+QKeySequence KeySequence_Widget::defaultSequence() const
+{
+    return d->default_sequence;
+}
+
 QAction *KeySequence_Widget::attachedAction() const
 {
     return d->action;
@@ -157,9 +163,19 @@ void KeySequence_Widget::setKeySequence(const QKeySequence &seq)
     d->update_sequence();
 }
 
+void KeySequence_Widget::setDefaultSequence(const QKeySequence &seq)
+{
+    d->default_sequence = seq;
+}
+
 void KeySequence_Widget::clear()
 {
     setKeySequence(QKeySequence());
+}
+
+void KeySequence_Widget::resetToDefault()
+{
+    setKeySequence(d->default_sequence);
 }
 
 void KeySequence_Widget::setAttachedAction(QAction *action)
@@ -266,4 +282,17 @@ bool KeySequence_Widget::event(QEvent *event)
     }
 
     return QWidget::event(event);
+}
+
+void KeySequence_Widget::changeEvent(QEvent *event)
+{
+    QWidget::changeEvent(event);
+    switch (event->type())
+    {
+        case QEvent::LanguageChange:
+            d->update_label();
+            break;
+        default:
+            break;
+    }
 }

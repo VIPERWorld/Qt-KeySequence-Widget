@@ -36,7 +36,7 @@ class KeySequence_Widget : public QWidget
     Q_OBJECT
     Q_PROPERTY(QKeySequence keySequence READ keySequence WRITE setKeySequence NOTIFY keySequenceChanged USER true)
     Q_PROPERTY(QAction* attachedAction READ attachedAction WRITE setAttachedAction NOTIFY attachedActionChanged)
-
+    Q_PROPERTY(QKeySequence defaultSequence READ defaultSequence WRITE setDefaultSequence)
 
     friend class KeySequence_Widget_Private;
     class KeySequence_Widget_Private* d;
@@ -48,12 +48,15 @@ public:
     ~KeySequence_Widget();
 
     QKeySequence keySequence() const;
+    QKeySequence defaultSequence() const;
     QAction* attachedAction() const;
 
 
 public slots:
     void setKeySequence ( const QKeySequence& seq );
+    void setDefaultSequence ( const QKeySequence& seq );
     void clear();
+    void resetToDefault();
 
     void setAttachedAction(QAction* action);
 
@@ -65,6 +68,7 @@ protected:
     void keyPressEvent(QKeyEvent *event);
     bool eventFilter(QObject *obj, QEvent *event);
     bool event(QEvent *event);
+    void changeEvent(QEvent *event);
 
 signals:
     void keySequenceChanged(QKeySequence);

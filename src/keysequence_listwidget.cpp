@@ -28,12 +28,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <QAction>
 #include <QMenu>
-#include <QPushButton>
+#include <QToolButton>
 #include <QHeaderView>
 #include <QMainWindow>
 
 KeySequence_ListWidget::KeySequence_ListWidget(QWidget *parent) :
-    QTableWidget(parent)
+    QTableWidget(parent), show_reset(false)
 {
     horizontalHeader()->hide();
     verticalHeader()->hide();
@@ -43,6 +43,7 @@ KeySequence_ListWidget::KeySequence_ListWidget(QWidget *parent) :
     insertColumn(0);
     insertColumn(1);
     insertColumn(2);
+    insertColumn(3);
 
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 }
@@ -51,12 +52,31 @@ void KeySequence_ListWidget::append_row(QAction* action)
 {
     int row = rowCount();
     insertRow(row);
-    setItem(row,0,new QTableWidgetItem(action->icon(),action->iconText()));
+
+    QTableWidgetItem* item = new QTableWidgetItem(action->icon(),action->iconText());
+    item->setData(Qt::UserRole,action->objectName());
+    setItem(row,0,item);
+
     KeySequence_Widget* ksw = new KeySequence_Widget(action);
+    //ksw->setDefaultSequence(action->shortcut());
     setCellWidget(row,1,ksw);
-    QPushButton *clear = new QPushButton(QIcon::fromTheme("edit-clear"),tr("Clear"));
+
+    QToolButton *clear = new QToolButton();
+    clear->setIcon(QIcon::fromTheme("edit-clear"));
+    clear->setText(tr("Clear"));
+    clear->setToolTip(tr("Clear shortcut for \"%1\"").arg(action->iconText()));
     connect(clear,SIGNAL(clicked()),ksw,SLOT(clear()));
     setCellWidget(row,2,clear);
+
+    QToolButton *reset = new QToolButton();
+    reset->setIcon(QIcon::fromTheme("edit-undo"));
+    reset->setText(tr("Reset"));
+    reset->setToolTip(tr("Reset shortcut for \"%1\" to the default %2")
+                      .arg(action->iconText())
+                      .arg(ksw->defaultSequence().toString(QKeySequence::NativeText)));
+    connect(reset,SIGNAL(clicked()),ksw,SLOT(resetToDefault()));
+    setCellWidget(row,3,reset);
+    reset->setVisible(show_reset);
 }
 
 void KeySequence_ListWidget::append_title_row(QString title)
@@ -68,7 +88,7 @@ void KeySequence_ListWidget::append_title_row(QString title)
     f.setBold(true);
     item->setFont(f);
     setItem(row,0,item);
-    setSpan(row,0,1,3);
+    setSpan(row,0,1,columnCount());
 }
 
 void KeySequence_ListWidget::append_rows(QList<QAction *> actions)
@@ -92,4 +112,42 @@ void KeySequence_ListWidget::append_window(QMainWindow *window)
     foreach(QMenu* menu, window->findChildren<QMenu*>())
         append_menu(menu);
     resizeColumnsToContents();
+}
+
+void KeySequence_ListWidget::set_default(QString action_name, QKeySequence default_sequence)
+{
+    for ( int i = 0; i < rowCount(); i++ )
+    {
+        QTableWidgetItem* it = item(i,0);
+        if ( it && it->data(Qt::UserRole).toString() == action_name )
+        {
+            KeySequence_Widget* ksw = qobject_cast<KeySequence_Widget*>(cellWidget(i,1));
+            QWidget* w = cellWidget(i,3);
+            if ( ksw && w )
+            {
+                ksw->setDefaultSequence(default_sequence);
+            }
+        }
+    }
+}
+
+bool KeySequence_ListWidget::show_reset_buttons() const
+{
+    return show_reset;
+}
+
+void KeySequence_ListWidget::set_show_reset_buttons(bool show)
+{
+    if ( show != show_reset )
+    {
+        show_reset = show;
+
+        for ( int i = 0; i < rowCount(); i++ )
+        {
+            KeySequence_Widget* ksw = qobject_cast<KeySequence_Widget*>(cellWidget(i,1));
+            QWidget* w = cellWidget(i,3);
+            if ( ksw && w )
+                w->setVisible(show);
+        }
+    }
 }

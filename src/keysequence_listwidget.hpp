@@ -31,6 +31,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 class KeySequence_ListWidget : public QTableWidget
 {
     Q_OBJECT
+    Q_PROPERTY(bool show_reset_buttons READ show_reset_buttons WRITE set_show_reset_buttons )
+
+    bool show_reset;
+
 public:
     explicit KeySequence_ListWidget(QWidget *parent = 0);
 
@@ -40,6 +44,11 @@ public:
     void append_rows(QList<QAction*> actions);
     void append_menu(QMenu* menu);
     void append_window(class QMainWindow* window);
+
+    void set_default(QString action_name, QKeySequence default_sequence);
+
+    bool show_reset_buttons() const;
+    void set_show_reset_buttons(bool show);
 
 };
 
